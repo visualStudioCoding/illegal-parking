@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pa.admin.Map">
+    <insert id="polygonInsert" parameterType="hashMap">
+        INSERT INTO zone
+        (
+            zone_name
+            , zone_polygon
+        )
+        VALUE
+        (
+            #{zoneName}
+            , POLYGONFROMTEXT(
+                <foreach collection="zonePolygon" item="polygon" open="'POLYGON((" close="))'" separator=",">
+                    ${polygon.latitude} ${polygon.longitude}
+                </foreach>
+            )
+        )
+    </insert>
+</mapper>

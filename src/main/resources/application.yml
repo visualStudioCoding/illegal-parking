@@ -1,0 +1,58 @@
+# Spring Setting
+spring:
+  profiles:
+    default: local
+  devtools:
+    livereload:
+      enabled: true
+    #  thymeleaf:
+    #    prefix: classpath:templates/
+    #    suffix: .html
+    #    cache: "false"
+  freemarker:
+    # freemarker 템플릿 경로 지정
+    template-loader-path: classpath:/templates
+    # return 호출시 앞쪽에 자동으로 붙는 내용 정의
+    # prefix:
+    # return 호출시 뒷쪽에 자동으로 붙는 내용 정의
+    suffix: .ftl
+    # freemarker content type 정의
+    contentType: text/html
+    # freemarker charset 정의
+    charset: UTF-8
+    # 기본은 true (false 설정 하는 경우 프리마커 변경 내용이 바로 적용 됨)
+    cache: false
+  datasource:
+    # driver-class-name: org.mariadb.jdbc.Driver
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+
+# Properties Encryption
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    property:
+      prefix: ENC(
+      suffix: )
+
+mybatis:
+  mapper-locations: classpath:mappers/*/*.xml
+  config-location: classpath:mybatis-config.xml
+
+logging:
+  level:
+    root: info
+
+---
+#naver cloud
+spring:
+  config:
+    activate:
+      on-profile: production
+
+---
+#tera develop server
+spring:
+  config:
+    activate:
+      on-profile: dev

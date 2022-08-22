@@ -1,0 +1,21 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /
+
+#spring:
+#  datasource:
+#    # driver-class-name: org.mariadb.jdbc.Driver
+#    #driver-class-name: com.mysql.cj.jdbc.Driver
+#    # url: jdbc:log4jdbc:mariadb://14.49.44.142:3308/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
+#    hikari:
+#      jdbc-url: ENC(CF/rQG/4gR9RE777ApayudxaOLyxu3BfKv06ZtIkrE86dCz71stiiZJKoGUEWmNpbBME3pXViZf+A/+3gxSwHSpHfsK6yhKRrMcCUT0oW+F3+LWMK8aauwWR5a7EM9tVDbokprRT/eYNGxPfmj4zGQ==)
+#      username: ENC(XZPgJxY36iY857nLYH66bQ==)
+#      password: ENC(LovkE7rMb7CjfIwu/YbV57fA3r810HIP)
+#      connection-test-query: SELECT 1
+#
+#open-api:
+#  kosis-key: ENC(0BJV6leG2vBkRHeT3cjxi/H0i4hTSr3Xn46FHHi3vwLWe3geKqj8QRLV6IQhKEp9ffm2C8EGMqk=)
+#  ecos-key : ENC(c/He8UeNBODLuOqCvOi1Gwla3al1Cuc0bRk3dSNKrhE=)
+#  enara-key: ENC(SNQoha/X8+2pkeb22fHWpVmwhVcfoH1pZDckmm2Y6Fs=)
+#  enara-id: ENC(nrNwP4o7Aau+1li/O9BBYkgjz2vr060k)

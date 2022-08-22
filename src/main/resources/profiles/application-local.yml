@@ -1,0 +1,15 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    # driver-class-name: org.mariadb.jdbc.Driver
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    # url: jdbc:log4jdbc:mariadb://192.168.0.53:3306/gis_test?characterEncoding=UTF-8&serverTimezone=UTC
+    parking:
+      jdbc-url: ENC(1BYvAR83Ze+aqh3jWENgJbihFfYTkyJmJqtuWn9q42zAoT5rrfmHuS5BEE747+HsYXVcUlDZZ18AbJgZuP8sCP228FW/g2J4I7QsY3cxYFrCWg+RaVcZGY44lQyCAeSC8CU3+R8IGNc=)
+      username: ENC(BEszJC2Ol9w8T0AkoXhdgg==)
+      password: ENC(KCYqSMBkTgu6wBokii5M5g==)
+      connection-test-query: SELECT 1
