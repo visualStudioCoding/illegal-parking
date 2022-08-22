@@ -15,12 +15,7 @@
     <div id="drawingMap"></div>
     <div id="map"></div>
     <p class="modes">
-        <button onclick="selectOverlay('MARKER')">마커</button>
-        <button onclick="selectOverlay('POLYLINE')">선</button>
-        <button onclick="selectOverlay('CIRCLE')">원</button>
-        <button onclick="selectOverlay('RECTANGLE')">사각형</button>
-        <button onclick="selectOverlay('POLYGON')">다각형</button>
-        <button onclick="getDataFromDrawingMap()">가져오기</button>
+        <button onclick="selectOverlay('POLYGON')">구역설정</button>
     </p>
     <p class="getdata">
         <button onclick="getDataFromDrawingMap()">가져오기</button>
@@ -34,9 +29,6 @@
         zoneName.push("${polygon.zoneName}");
         zonePolygon.push("${polygon.zonePolygon}");
     </#list>
-
-    console.log(zoneName);
-    console.log(zonePolygon);
 
 </script>
 <!-- /본문 끝 -->
