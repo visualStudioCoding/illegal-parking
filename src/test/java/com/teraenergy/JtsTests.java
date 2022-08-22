@@ -12,16 +12,22 @@ class JtsTests {
 	@Test
 	public void innerPointTest() {
 
-		Coordinate[] coordinates = {
-				new Coordinate(126.567668343956, 33.451276403135246),
-				new Coordinate(126.56966217559021, 33.45045386564941),
-				new Coordinate(126.56935715259203, 33.45123719996867),
-				new Coordinate(126.56834423197559, 33.451621366446425),
-				new Coordinate(126.567668343956, 33.451276403135246),
-		};
+		String polygonPoints = "126.567668343956 33.451276403135246,126.56935715259203 33.45123719996867,126.56834423197559 33.451621366446425,126.56966217559021 33.45045386564941,126.567668343956 33.451276403135246";
+		String[] polygonPointArr = polygonPoints.split(",");
 
+		Coordinate[] coordinates = new Coordinate[polygonPointArr.length];
+//		Coordinate[] coordinates = {
+//				new Coordinate(126.567668343956, 33.451276403135246),
+//				new Coordinate(126.56966217559021, 33.45045386564941),
+//				new Coordinate(126.56935715259203, 33.45123719996867),
+//				new Coordinate(126.56834423197559, 33.451621366446425),
+//				new Coordinate(126.567668343956, 33.451276403135246),
+//		};
+		for (int i = 0; i < polygonPointArr.length; i++) {
+			String[] test = polygonPointArr[i].split(" ");
+			coordinates[i] = new Coordinate(Double.parseDouble(test[0]), Double.parseDouble(test[1]));
+		}
 
-//		Polygon testPoly = geometryFactory.createPolygon(coordinates);
 		Polygon testPoly = geometryFactory.createPolygon(coordinates);
 		Point polyInnerPoint = geometryFactory.createPoint(new Coordinate(126.56866907996265,33.451180712229686));
 		Point polyInnerPoint2 = geometryFactory.createPoint(new Coordinate(126.56915449563454,33.450893887400085));

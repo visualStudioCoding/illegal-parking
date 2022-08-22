@@ -18,4 +18,10 @@
             )
         )
     </insert>
+
+    <select id="selectPolygonList" parameterType="hashMap" resultType="hashMap">
+        SELECT zone_name                                                                        AS zoneName
+             , SUBSTRING_INDEX(SUBSTRING_INDEX(ASTEXT(zone_polygon), 'POLYGON((', -1), '))', 1) AS zonePolygon
+            FROM zone
+    </select>
 </mapper>

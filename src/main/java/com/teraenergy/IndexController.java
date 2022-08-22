@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
-    @GetMapping(value = {"/", "/index"})
+    @GetMapping(value = {"/", "/index", "/admin"})
     public String indexPage() {
-        return "index";
+        return "redirect:/admin/map/main";
     }
 }

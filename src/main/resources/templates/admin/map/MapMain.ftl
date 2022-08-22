@@ -20,12 +20,25 @@
         <button onclick="selectOverlay('CIRCLE')">원</button>
         <button onclick="selectOverlay('RECTANGLE')">사각형</button>
         <button onclick="selectOverlay('POLYGON')">다각형</button>
+        <button onclick="getDataFromDrawingMap()">가져오기</button>
     </p>
     <p class="getdata">
         <button onclick="getDataFromDrawingMap()">가져오기</button>
     </p>
 </div>
 <script src="/js/admin/map.js"></script>
+<script type="text/javascript">
+    let zoneName = [];
+    let zonePolygon = [];
+    <#list polygonList as polygon>
+        zoneName.push("${polygon.zoneName}");
+        zonePolygon.push("${polygon.zonePolygon}");
+    </#list>
+
+    console.log(zoneName);
+    console.log(zonePolygon);
+
+</script>
 <!-- /본문 끝 -->
 <!-- 푸터 시작 -->
 <#include "*/common/footer.ftl">
