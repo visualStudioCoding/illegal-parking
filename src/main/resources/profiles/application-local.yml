@@ -13,3 +13,5 @@ spring:
       username: ENC(BEszJC2Ol9w8T0AkoXhdgg==)
       password: ENC(KCYqSMBkTgu6wBokii5M5g==)
       connection-test-query: SELECT 1
+      connection-timeout: 58000
+      max-lifetime: 580000

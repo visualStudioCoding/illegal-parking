@@ -16,12 +16,12 @@
     <div id="map"></div>
     <p class="modes">
         <button onclick="selectOverlay('POLYGON')">구역설정</button>
+        <button onclick="getDataFromDrawingMap()">가져오기</button>
     </p>
     <p class="getdata">
         <button onclick="getDataFromDrawingMap()">가져오기</button>
     </p>
 </div>
-<script src="/js/admin/map.js"></script>
 <script type="text/javascript">
     let zoneName = [];
     let zonePolygon = [];
@@ -31,6 +31,7 @@
     </#list>
 
 </script>
+<script src="/js/admin/map.js"></script>
 <!-- /본문 끝 -->
 <!-- 푸터 시작 -->
 <#include "*/common/footer.ftl">

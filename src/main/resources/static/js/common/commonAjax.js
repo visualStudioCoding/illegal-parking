@@ -10,15 +10,17 @@ let commonAjax = function(url, fn, methodType, param, errorMsg){
     // console.log("methodType : ", methodType);
     // console.log("errorMsg : ", errorMsg);
 
+    console.log(param);
     let request = $.ajax({
         url: url,
         method: methodType,
         data: param,
-        dataType: "json"
+        dataType: "json",
+        contentType: 'application/json; charset-utf-8',
     });
     //콜백함수
     request.done(fn);
-    console.log(fn);
+    // console.log(fn);
 
     request.fail(function( jqXHR, textStatus ) {
         alert( textStatus + " : " + errorMsg );

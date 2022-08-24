@@ -3,9 +3,7 @@ package com.teraenergy.illegalparking.admin.map;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -38,8 +36,19 @@ public class MapController {
 		return modelAndView;
 	}
 
-	@GetMapping("/test")
-	public Map<String, Object> test() {
+	@PostMapping("/polygonInsert")
+	public Map<String, Object> polygonInsert(@RequestBody List<Map<String, Object>> paramList) throws Exception {
+		for (Map<String, Object> dataMap : paramList) {
+			System.out.println(dataMap);
+			System.out.println(dataMap.get("points"));
+
+			List<Object> test = (List<Object>) dataMap.get("points");
+			System.out.println(test.get(0));
+			test.add(test.get(0));
+
+			dataMap.put("points", test);
+			commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".polygonInsert");
+		}
 		Map<String, Object> testMap = new HashMap<>();
 		testMap.put("test", "test");
 		return testMap;

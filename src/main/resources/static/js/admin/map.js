@@ -6,7 +6,8 @@ var drawingMapContainer = document.getElementById('drawingMap'),
     };
 
 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-var drawingMap = new kakao.maps.Map(drawingMapContainer, drawingMap);
+var drawingMap = new kakao.maps.Map(drawingMapContainer, drawingMap)
+    , overlays = []; // 지도에 그려진 도형을 담을 배열
 
 var options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
     map: drawingMap, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
@@ -48,8 +49,7 @@ var mapContainer = document.getElementById('map'),
     };
 
 // 지도 div와 지도 옵션으로 지도를 생성합니다
-var map = new kakao.maps.Map(mapContainer, mapOptions),
-    overlays = []; // 지도에 그려진 도형을 담을 배열
+var map = new kakao.maps.Map(mapContainer, mapOptions);
 
 // 가져오기 버튼을 클릭하면 호출되는 핸들러 함수입니다
 // Drawing Manager로 그려진 객체 데이터를 가져와 아래 지도에 표시합니다
@@ -61,8 +61,20 @@ function getDataFromDrawingMap() {
     // 아래 지도에 그려진 도형이 있다면 모두 지웁니다
     removeOverlays();
 
-    // 지도에 가져온 데이터로 도형들을 그립니다
-    drawPolygon(data[kakao.maps.drawing.OverlayType.POLYGON]);
+    let param = data[kakao.maps.drawing.OverlayType.POLYGON];
+
+    let errorMsg = '실패';
+    let callBackFn = function (data) {
+        if (param.length === 0) {
+            alert('구역을 설정하시기 바랍니다.');
+            return false;
+        } else {
+            // 지도에 가져온 데이터로 도형들을 그립니다
+            getPolygon(param);
+        }
+    }
+    commonAjax("/admin/map/polygonInsert", callBackFn, 'POST', JSON.stringify(param), errorMsg);
+
 }
 
 // 아래 지도에 그려진 도형이 있다면 모두 지웁니다
@@ -76,24 +88,20 @@ function removeOverlays() {
     overlays = [];
 }
 
-// Drawing Manager에서 가져온 데이터 중 다각형을 아래 지도에 표시하는 함수입니다
-function drawPolygon(polygons) {
-    var len = polygons.length, i = 0;
-    console.log(zonePolygon);
-
-    let test = [];
-    zonePolygon.forEach(function(element){
-        for (i=0; i < element.split(",").length; i++){
-            test = element.split(",")[i].split(" ");
-            console.log(test)
-        }
+function getPolygon(polygons) {
+    let areas = getPolygonData();
+    areas.forEach(function (element) {
+        polygons.push(element);
     })
+    var len = polygons.length, i = 0;
+    removeOverlays();
+
 
     for (; i < len; i++) {
         var path = pointsToPath(polygons[i].points);
         var style = polygons[i].options;
         var polygon = new kakao.maps.Polygon({
-            map: map,
+            map: drawingMap,
             path: path,
             strokeColor: style.strokeColor,
             strokeOpacity: style.strokeOpacity,
@@ -121,3 +129,36 @@ function pointsToPath(points) {
 
     return path;
 }
+
+let polygonStyle = {
+    "draggable": true,
+    "removable": true,
+    "editable": true,
+    "strokeColor": "#39f",
+    "strokeWeight": 3,
+    "strokeStyle": "solid",
+    "strokeOpacity": 1,
+    "fillColor": "#39f",
+    "fillOpacity": 0.5
+};
+
+function getPolygonData() {
+    let areas = []
+    for (let j = 0; j < zonePolygon.length; j++) {
+        let pointsPoly = [], obj = {};
+        let zonePolygonArr = zonePolygon[j].split(",");
+        obj.name = zoneName[j];
+        for (let i = 0; i < zonePolygonArr.length - 1; i++) {
+            let pathPoints = zonePolygonArr[i].split(" ");
+            pointsPoly[i] = {'x': parseFloat(pathPoints[0]), 'y': parseFloat(pathPoints[1])};
+            obj.points = pointsPoly;
+        }
+        obj.type = 'polygon';
+        obj.coordinate = 'wgs84';
+        obj.options = polygonStyle;
+        areas.push(obj);
+    }
+    return areas;
+}
+
+getPolygon(getPolygonData());

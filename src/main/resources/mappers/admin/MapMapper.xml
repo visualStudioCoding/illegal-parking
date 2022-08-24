@@ -10,10 +10,10 @@
         )
         VALUE
         (
-            #{zoneName}
+            #{type}
             , POLYGONFROMTEXT(
-                <foreach collection="zonePolygon" item="polygon" open="'POLYGON((" close="))'" separator=",">
-                    ${polygon.latitude} ${polygon.longitude}
+                <foreach collection="points" item="point" open="'POLYGON((" close="))'" separator=",">
+                    ${point.x} ${point.y}
                 </foreach>
             )
         )
