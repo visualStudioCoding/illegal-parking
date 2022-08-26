@@ -5,12 +5,12 @@
     <insert id="polygonInsert" parameterType="hashMap">
         INSERT INTO zone
         (
-            zone_name
+            zone_type
             , zone_polygon
         )
         VALUE
         (
-            #{type}
+            #{zoneType}
             , POLYGONFROMTEXT(
                 <foreach collection="points" item="point" open="'POLYGON((" close="))'" separator=",">
                     ${point.x} ${point.y}
@@ -20,7 +20,8 @@
     </insert>
 
     <select id="selectPolygonList" parameterType="hashMap" resultType="hashMap">
-        SELECT zone_name                                                                        AS zoneName
+        SELECT zone_seq                                                                         AS zoneSeq
+             , zone_type                                                                        AS zoneName
              , SUBSTRING_INDEX(SUBSTRING_INDEX(ASTEXT(zone_polygon), 'POLYGON((', -1), '))', 1) AS zonePolygon
             FROM zone
     </select>

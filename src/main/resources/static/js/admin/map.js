@@ -1,13 +1,15 @@
 // Drawing Manager로 도형을 그릴 지도 div
 var drawingMapContainer = document.getElementById('drawingMap'),
     drawingMap = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        center: new kakao.maps.LatLng(35.02035492064902, 126.79383256393594), // 지도의 중심좌표
         level: 3 // 지도의 확대 레벨
     };
 
 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 var drawingMap = new kakao.maps.Map(drawingMapContainer, drawingMap)
-    , overlays = []; // 지도에 그려진 도형을 담을 배열
+    , overlays = [] // 지도에 그려진 도형을 담을 배열
+    , customOverlay = new kakao.maps.CustomOverlay({})
+    , infowindow = new kakao.maps.InfoWindow({removable: true});
 
 var options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
     map: drawingMap, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
@@ -21,8 +23,8 @@ var options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
         draggable: true,
         removable: true,
         editable: true,
-        strokeColor: '#39f',
-        fillColor: '#39f',
+        strokeColor: '#330000',
+        fillColor: '#FF3333',
         fillOpacity: 0.5,
         hintStrokeStyle: 'dash',
         hintStrokeOpacity: 0.5
@@ -48,8 +50,11 @@ var mapContainer = document.getElementById('map'),
         level: 3 // 지도의 확대 레벨
     };
 
-// 지도 div와 지도 옵션으로 지도를 생성합니다
-var map = new kakao.maps.Map(mapContainer, mapOptions);
+// 폴리곤 생성 후 새로 그릴 때 생성된 폴리곤 삭제를 위해 manager 데이터 저장
+let drawingDataTargets = [];
+manager.addListener('drawend', function(data) {
+    drawingDataTargets.push(data.target);
+});
 
 // 가져오기 버튼을 클릭하면 호출되는 핸들러 함수입니다
 // Drawing Manager로 그려진 객체 데이터를 가져와 아래 지도에 표시합니다
@@ -70,12 +75,22 @@ function getDataFromDrawingMap() {
             return false;
         } else {
             // 지도에 가져온 데이터로 도형들을 그립니다
-            getPolygon(param);
+            drawingPolygon(param, 'drawing');
+            // 생성한 폴리곤 삭제
+            removeDrawingOverlays();
         }
     }
     commonAjax("/admin/map/polygonInsert", callBackFn, 'POST', JSON.stringify(param), errorMsg);
 
 }
+
+// 생성한 그리기 도형 삭제
+function removeDrawingOverlays() {
+    drawingDataTargets.forEach(function (element) {
+        manager.remove(element);
+    })
+}
+
 
 // 아래 지도에 그려진 도형이 있다면 모두 지웁니다
 function removeOverlays() {
@@ -88,14 +103,15 @@ function removeOverlays() {
     overlays = [];
 }
 
-function getPolygon(polygons) {
+function drawingPolygon(polygons, stat) {
     let areas = getPolygonData();
-    areas.forEach(function (element) {
-        polygons.push(element);
-    })
+    if(stat === 'drawing') {
+        areas.forEach(function (element) {
+            polygons.push(element);
+        })
+    }
     var len = polygons.length, i = 0;
     removeOverlays();
-
 
     for (; i < len; i++) {
         var path = pointsToPath(polygons[i].points);
@@ -110,10 +126,14 @@ function getPolygon(polygons) {
             fillColor: style.fillColor,
             fillOpacity: style.fillOpacity
         });
-
         overlays.push(polygon);
+
     }
 }
+kakao.maps.event.addListener(drawingMap, 'click', function(mouseEvent) {
+    var latlng = mouseEvent.latLng;
+    console.log('click! ' + latlng.toString());
+});
 
 // Drawing Manager에서 가져온 데이터 중
 // 선과 다각형의 꼭지점 정보를 kakao.maps.LatLng객체로 생성하고 배열로 반환하는 함수입니다
@@ -134,11 +154,11 @@ let polygonStyle = {
     "draggable": true,
     "removable": true,
     "editable": true,
-    "strokeColor": "#39f",
-    "strokeWeight": 3,
+    "strokeColor": "#330000",
+    "strokeWeight": 2,
     "strokeStyle": "solid",
     "strokeOpacity": 1,
-    "fillColor": "#39f",
+    "fillColor": "#FF3333",
     "fillOpacity": 0.5
 };
 
@@ -148,6 +168,7 @@ function getPolygonData() {
         let pointsPoly = [], obj = {};
         let zonePolygonArr = zonePolygon[j].split(",");
         obj.name = zoneName[j];
+        obj.seq = zoneSeq[j];
         for (let i = 0; i < zonePolygonArr.length - 1; i++) {
             let pathPoints = zonePolygonArr[i].split(" ");
             pointsPoly[i] = {'x': parseFloat(pathPoints[0]), 'y': parseFloat(pathPoints[1])};
@@ -161,4 +182,4 @@ function getPolygonData() {
     return areas;
 }
 
-getPolygon(getPolygonData());
+drawingPolygon(getPolygonData(), 'load');

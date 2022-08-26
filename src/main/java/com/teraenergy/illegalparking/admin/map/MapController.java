@@ -35,22 +35,32 @@ public class MapController {
 		log.info(PAGE_ID + DIRECTORY + "Main");
 		return modelAndView;
 	}
+	@GetMapping("/test")
+	public ModelAndView test() throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		List<Map<String, Object>> polygonList = mapService.polygonList(null, PAGE_ID, PROGRAM_ID);
 
+		modelAndView.setViewName(PAGE_ID + DIRECTORY + "Test");
+		modelAndView.addObject("polygonList", polygonList);
+		log.info(PAGE_ID + DIRECTORY + "Test");
+		return modelAndView;
+	}
 	@PostMapping("/polygonInsert")
 	public Map<String, Object> polygonInsert(@RequestBody List<Map<String, Object>> paramList) throws Exception {
 		for (Map<String, Object> dataMap : paramList) {
 			System.out.println(dataMap);
 			System.out.println(dataMap.get("points"));
 
-			List<Object> test = (List<Object>) dataMap.get("points");
-			System.out.println(test.get(0));
-			test.add(test.get(0));
+			List<Object> pointList = (List<Object>) dataMap.get("points");
+			System.out.println(pointList.get(0));
+			pointList.add(pointList.get(0));
 
-			dataMap.put("points", test);
+			dataMap.put("points", pointList);
+			dataMap.put("zoneType", "N");
 			commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".polygonInsert");
 		}
-		Map<String, Object> testMap = new HashMap<>();
-		testMap.put("test", "test");
-		return testMap;
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("test", "test");
+		return resultMap;
 	}
 }
