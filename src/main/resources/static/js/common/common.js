@@ -3,6 +3,26 @@ function appendObjTo(thatArray, newObj) {
     return Object.freeze(thatArray.concat(frozenObj));
 }
 
+// serialize 맵형태로 변경
+$.fn.serializeObject = function(){
+    const o = {};
+    const a = this.serializeArray();
+    $.each(a, function() {
+        const name = $.trim(this.name),
+            value = $.trim(this.value);
+
+        if (o[name]) {
+            if (!o[name].push) {
+                o[name] = [o[name]];
+            }
+            o[name].push(value || '');
+        } else {
+            o[name] = value || '';
+        }
+    });
+    return o;
+};
+
 /******************************
  * 폴리곤 내 포함 여부 체크 start
  * ****************************/
@@ -75,6 +95,9 @@ function doIntersect(p1, q1, p2, q2) {
 
 
 function isInside(polygon, n, p) {
+
+    polygon.push(polygon[0]);
+
     // There must be at least 3 vertices in polygon[]
     if (n < 3) {
         return false;

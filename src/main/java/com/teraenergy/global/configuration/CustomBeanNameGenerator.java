@@ -1,8 +1,7 @@
 package com.teraenergy.global.configuration;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -14,9 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
+@Slf4j
 public class CustomBeanNameGenerator implements BeanNameGenerator {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomBeanNameGenerator.class);
 
     // 이 클래스는 Spring이 기본적으로 사용하는 BeanNameGenerator입니다. 컨트롤러가 아닐경우 이 클래스를 사용하려고 선언하였습니다.
     private final AnnotationBeanNameGenerator defaultGenerator = new AnnotationBeanNameGenerator();
@@ -35,7 +33,7 @@ public class CustomBeanNameGenerator implements BeanNameGenerator {
             result = this.defaultGenerator.generateBeanName(definition, registry);
         }
 
-        LOGGER.info("Registered Bean Name : " + result); //$NON-NLS-1$
+//        log.info("Registered Bean Name : " + result); //$NON-NLS-1$
 
         return result;
     }

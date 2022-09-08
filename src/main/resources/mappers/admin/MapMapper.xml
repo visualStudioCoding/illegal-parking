@@ -1,28 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="pa.admin.Map">
-    <insert id="polygonInsert" parameterType="hashMap">
-        INSERT INTO zone
-        (
-            zone_type
-            , zone_polygon
-        )
-        VALUE
-        (
-            #{zoneType}
-            , POLYGONFROMTEXT(
-                <foreach collection="points" item="point" open="'POLYGON((" close="))'" separator=",">
-                    ${point.x} ${point.y}
-                </foreach>
-            )
-        )
-    </insert>
+  <insert id="insertPolygon" parameterType="hashMap">
+    INSERT INTO zone
+    (zone_type, zone_polygon)
+    VALUE
+    (#{zoneType}
+      , POLYGONFROMTEXT(
+      <foreach collection="points" item="point" open="'POLYGON((" close="))'" separator=",">
+        ${point.x} ${point.y}
+      </foreach>)
+    )
+  </insert>
 
-    <select id="selectPolygonList" parameterType="hashMap" resultType="hashMap">
-        SELECT zone_seq                                                                         AS zoneSeq
-             , zone_type                                                                        AS zoneName
-             , SUBSTRING_INDEX(SUBSTRING_INDEX(ASTEXT(zone_polygon), 'POLYGON((', -1), '))', 1) AS zonePolygon
-            FROM zone
-    </select>
+  <select id="selectPolygonList" parameterType="hashMap" resultType="hashMap">
+    SELECT zone_seq                                                                         AS zoneSeq
+         , zone_type                                                                        AS zoneType
+         , SUBSTRING_INDEX(SUBSTRING_INDEX(ASTEXT(zone_polygon), 'POLYGON((', -1), '))', 1) AS zonePolygon
+      FROM zone
+    <if test='searchZoneType != null and searchZoneType != ""'>
+     WHERE zone_type = #{searchZoneType}
+    </if>
+  </select>
+
+  <delete id="deletePolygon" parameterType="hashMap">
+    DELETE FROM zone
+     WHERE zone_seq = #{polySeq}
+  </delete>
+
+  <update id="updatePolygon" parameterType="hashMap">
+    UPDATE zone
+       SET zone_type  = #{zoneType}
+         , start_time = #{startTime}
+         , end_time   = #{endTime}
+     WHERE zone_seq = #{polySeq}
+  </update>
+
+  <select id="selectPolygonDetail" parameterType="hashMap" resultType="hashMap">
+    SELECT zone_seq  AS zoneSeq
+         , zone_type AS zoneType
+         , start_time AS startTime
+         , end_time AS endTime
+      FROM zone
+     WHERE zone_seq = #{polySeq}
+  </select>
 </mapper>

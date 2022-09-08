@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Properties>
+    <Property name="logName">illegalParking</Property>
+    <Property name="layoutPattern">[%d] %-5level [%thread] %C{100} %M - %msg%n</Property>
+  </Properties>
+
+  <!-- 콘솔, 파일에 찍을 때 형식 및 설정 셋팅-->
+  <Appenders>
+    <Console name="console" target="SYSTEM_OUT">
+      <PatternLayout pattern="[%d{HH:mm:ss.SSS}] %-5level [%thread] %C{100} %M - %msg%n"/>
+    </Console>
+  </Appenders>
+
+  <Loggers>
+    <logger name="com.teraenergy" level="debug" additivity="false">
+      <AppenderRef ref="console"/>
+    </logger>
+
+
+    <!-- =================================================================== -->
+    <!-- SPRING																 -->
+    <!-- =================================================================== -->
+    <logger name="org.springframework.core" level="error" additivity="false">
+      <AppenderRef ref="console"/>
+    </logger>
+
+    <logger name="org.springframework.beans" level="error" additivity="false">
+      <AppenderRef ref="console"/>
+    </logger>
+
+    <logger name="org.springframework.context" level="error" additivity="false">
+      <AppenderRef ref="console"/>
+    </logger>
+
+    <logger name="org.springframework.web" level="error" additivity="false">
+      <AppenderRef ref="console"/>
+    </logger>
+
+    <!-- =================================================================== -->
+    <!-- JDBC																 -->
+    <!-- =================================================================== -->
+    <logger name="org.springframework.jdbc" level="error" additivity="false">
+      <AppenderRef ref="console"/>
+    </logger>
+
+    <logger name="jdbc.sqltiming" level="debug" additivity="false">
+      <AppenderRef ref="console"/>
+    </logger>
+
+    <logger name="jdbc.sqlonly" level="error" additivity="false">
+      <AppenderRef ref="console"/>
+    </logger>
+
+    <logger name="jdbc.connection" level="error" additivity="false">
+      <AppenderRef ref="console"/>
+      <AppenderRef ref="file"/>
+    </logger>
+
+    <logger name="jdbc.resultset" level="error" additivity="false">
+      <AppenderRef ref="console"/>
+    </logger>
+
+    <logger name="jdbc.audit" level="error" additivity="false">
+      <AppenderRef ref="console"/>
+    </logger>
+
+    <logger name="jdbc.resultsettable" level="debug" additivity="false">
+      <AppenderRef ref="console"/>
+    </logger>
+
+
+    <!-- =================================================================== -->
+    <!-- Root(Default) Setting												 -->
+    <!-- =================================================================== -->
+    <!-- off, fatal, error, warn, info, debug, trace, all -->
+    <Root level="debug" additivity="false">
+      <AppenderRef ref="console"/>
+    </Root>
+  </Loggers>
+</Configuration>

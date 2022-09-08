@@ -12,6 +12,9 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    all {
+        exclude  group: "org.springframework.boot", module : "spring-boot-starter-logging"
+    }
 }
 
 repositories {
@@ -39,13 +42,22 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.7.0'
     implementation group: 'org.bgee.log4jdbc-log4j2', name:'log4jdbc-log4j2-jdbc4.1', version: '1.16'
     implementation group: 'org.json', name: 'json', version: '20220320'
-    implementation('ch.qos.logback:logback-classic')
     implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.4'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     implementation group: 'org.dom4j', name: 'dom4j', version: '2.1.0'
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+
+    // https://mvnrepository.com/artifact/org.webjars.npm/point-in-polygon
+    implementation group: 'org.webjars.npm', name: 'point-in-polygon', version: '1.1.0'
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-log4j2
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.7.3'
+
+
+
+
 
 }
 

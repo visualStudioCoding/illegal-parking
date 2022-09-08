@@ -15,7 +15,7 @@ public class MapService {
 	private CommonMapper commonMapper;
 
 	public List<Map<String, Object>> polygonList(Map<String, Object> params, String pageId, String programId) throws Exception {
-		List<Map<String, Object>> polygonList = (List<Map<String, Object>>) commonMapper.selectList(null, pageId + programId + ".selectPolygonList");
+		List<Map<String, Object>> polygonList = (List<Map<String, Object>>) commonMapper.selectList(params, pageId + programId + ".selectPolygonList");
 		return polygonList;
 	}
 }
